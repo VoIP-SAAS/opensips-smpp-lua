@@ -1,2 +1,2 @@
 # opensips-smpp-lua
-Opensips lua script to handle encoding 
+Opensips lua script to handle encoding/decoding 
