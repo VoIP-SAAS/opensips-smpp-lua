@@ -71,9 +71,20 @@ def decoding():
         decoded = bytes.fromhex(encoded).decode("utf-8")
     return decoded
 
-
+def testing():
+    string = sys.argv[1]
+    try:
+        f = bytes.fromhex(string).decode("utf-16be")
+        return 1
+    except:
+        return 0
+        
+    ##return f
+    
 
 if sys.argv[2] == "encode":
     print(encoding())
 elif sys.argv[2] == "decode":
     print(decoding())
+elif sys.argv[2] == "test":
+    print(testing())
