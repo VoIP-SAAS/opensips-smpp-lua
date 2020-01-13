@@ -15,7 +15,10 @@ function arg_function(str)
                 local handle = io.popen("python3 /etc/opensips/scripts/gsm_utf.py " .. "'"..msg.. "'" .." "..tool.." "..format)
                 local cmd_var = handle:read("*all")
                 handle:close()
-                xlog("Formated string ~> " .. cmd_var .. "\n")
+                if format == "GSM" then
+                        cmd_var=cmd_var:match("b'(.+)'")
+                        xlog("Formated GSM-7 bit string ~> " .. cmd_var .. "\n")
+                end
                 return AVP_set("formatted-msg", cmd_var)
         end
 end

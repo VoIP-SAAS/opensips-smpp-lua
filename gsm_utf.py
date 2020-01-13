@@ -1,28 +1,23 @@
 #!/usr/bin/python3
-import random
-import six
-from smpplib import consts, exceptions
 import binascii
-import base64
 import sys
 
-gsm = ("@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞ\x1bÆæßÉ !\"#¤%&'()*+,-./0123456789:;<=>"
-       "?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ`¿abcdefghijklmnopqrstuvwxyzäöñüà")
+gsm = ("@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞ\x1bÆæßÉ !\"#¤%&'()*+,-./0123456789:;<=>?"
+       "¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà")
 ext = ("````````````````````^```````````````````{}`````\\````````````[~]`"
        "|````````````````````````````````````€``````````````````````````")
 
-
 def gsm_encode(plaintext):
-    result = []
+    res = ""
     for c in plaintext:
-        idx = gsm.find(c)
+        idx = gsm.find(c);
         if idx != -1:
-            result.append(chr(idx))
+            res += chr(idx)
             continue
         idx = ext.find(c)
         if idx != -1:
-            result.append(chr(27) + chr(idx))
-    return binascii.hexlify(''.join(result).encode('utf-8'))
+            res += chr(27) + chr(idx)
+    return binascii.b2a_hex(res.encode("utf-8"))
 
 def gsm_decode(hexstr):
     hexstr = binascii.unhexlify(hexstr)
@@ -40,7 +35,7 @@ def gsm_decode(hexstr):
     return ''.join(result)
 
 def encoding():
-    plaintext = sys.argv[1]
+    plaintext = sys.argv[1].strip()
     if sys.argv[3] == "GSM":
         encoded = gsm_encode(plaintext)
     elif sys.argv[3] == "ISO":    
@@ -56,7 +51,7 @@ def encoding():
     return encoded
 
 def decoding():
-    encoded = sys.argv[1]
+    encoded = sys.argv[1].strip()
     if sys.argv[3] == "GSM":
         decoded = gsm_decode(encoded)
     elif sys.argv[3] == "ISO":    
@@ -78,9 +73,6 @@ def testing():
         return 1
     except:
         return 0
-        
-    ##return f
-    
 
 if sys.argv[2] == "encode":
     print(encoding())
